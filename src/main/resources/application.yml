@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: spring-mongo
+
+  # MongoDB's connection (default: connect to local Mongo with credentials)
+  mongodb:
+    uri: mongodb://localhost:27017/springdb
+    database: springdb
+
+# Examples / alternatives:
+# If running Mongo locally without auth (not recommended):
+# spring:
+#   data:
+#     mongodb:
+#       uri: mongodb://localhost:27017/springdb
+#       database: springdb
+
+# When running inside Docker Compose (app in same network as service `mongo`):
+# spring:
+#   data:
+#     mongodb:
+#       uri: mongodb://root:example@mongo:27017/springdb?authSource=admin
+#       database: springdb
+
+# Server port
+server:
+  port: 8080
+
+# Springdoc / OpenAPI settings: exposes API docs and Swagger UI for WebFlux
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    display-request-duration: true
