@@ -1,3 +1,6 @@
+<!-- CI badge: replace <OWNER> and <REPO> with your GitHub owner/repo -->
+[![CI](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml/badge.svg)](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml)
+
 # spring-mongo
 
 A small Spring Boot (Reactive) sample that uses MongoDB. This repository contains:
@@ -12,7 +15,7 @@ A small Spring Boot (Reactive) sample that uses MongoDB. This repository contain
 
 - Java 21 (project toolchain set in `build.gradle`)
 - Gradle (the included Gradle wrapper `./gradlew` is recommended)
-- Docker & Docker Compose (for running MongoDB + Mongo Express)
+- Docker & Docker Compose (for running MongoDB + Mongo Express) — Docker is also required to run the integration tests.
 
 ---
 
@@ -109,6 +112,47 @@ curl -s -X DELETE http://localhost:8080/api/users/<id> -I
 ```
 
 Replace `<id>` with a real document id returned by the create or list calls.
+
+---
+
+## Testing (local + CI)
+
+This project uses Testcontainers for integration tests. Tests spin up a real MongoDB container so they are closer to production and suitable for CI. Docker is required locally and on CI.
+
+Important notes
+- Docker must be available and the user running tests must have permission to use it.
+- Testcontainers will automatically pull required Docker images (e.g. `mongo:6.0` and Testcontainers helpers) on first run.
+
+Run tests locally
+
+- Run just the integration test class (fast focused run):
+
+```bash
+./gradlew test --tests "com.sg.mongo.controller.UserControllerIntegrationTest"
+```
+
+- Run the full test suite:
+
+```bash
+./gradlew test
+```
+
+- Generated test report (after running tests):
+
+```
+build/reports/tests/test/index.html
+```
+
+CI (GitHub Actions)
+
+- This repository contains a workflow at `.github/workflows/ci.yml` which runs `./gradlew test` on push and pull_request to `main`/`master`.
+- The README includes a badge placeholder above. Replace `<OWNER>` and `<REPO>` in the badge URL with your GitHub owner and repository name to enable a working CI badge:
+
+```markdown
+[![CI](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml/badge.svg)](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml)
+```
+
+If you want I can update the badge automatically if you provide the GitHub repo URL (owner/repo) or if the repository already has a git remote `origin` available in this environment.
 
 ---
 
